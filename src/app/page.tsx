@@ -3,6 +3,7 @@
 import { Sidebar } from '@/components/sidebar'
 import { Stories } from '@/components/stories'
 import { StoryViewer } from '@/components/story-viewer'
+import { LoginPage } from '@/components/login-page'
 import { useAuth } from '@/lib/contexts/auth-context'
 import { useNavigation } from '@/lib/contexts/navigation-context'
 import { motion } from 'framer-motion'
@@ -107,9 +108,10 @@ function AuthenticatedFeed() {
 }
 
 export default function MainPage() {
-  const { user } = useAuth()
+  const { user, isLoading } = useAuth()
 
-  if (!user) {
+  // Mostrar loading apenas durante o carregamento inicial
+  if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center">
@@ -119,6 +121,12 @@ export default function MainPage() {
     )
   }
 
+  // Se não há usuário logado, mostrar tela de login
+  if (!user) {
+    return <LoginPage />
+  }
+
+  // Se há usuário logado, mostrar o app
   return (
     <>
       <AuthenticatedFeed />
