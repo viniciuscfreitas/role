@@ -3,8 +3,6 @@
 import { motion } from 'framer-motion'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { useNavigation } from '@/lib/contexts/navigation-context'
-import { useSidebar } from '@/lib/contexts/sidebar-context'
-import { cn } from '@/lib/utils'
 
 // Mock data
 const stories = [
@@ -84,7 +82,6 @@ const stories = [
 
 export function Stories() {
   const { setCurrentPage, setIsStoryViewerOpen, setCurrentStoryIndex } = useNavigation()
-  const { isLeftSidebarCollapsed, isRightSidebarCollapsed } = useSidebar()
 
   const openStory = (storyIndex: number) => {
       setCurrentStoryIndex(storyIndex)
@@ -92,74 +89,65 @@ export function Stories() {
   }
 
   return (
-    <div className="w-full bg-card/80 backdrop-blur-sm">
-      <div className="flex justify-center">
-        <div className={cn(
-          "w-full transition-all duration-300",
-          isLeftSidebarCollapsed && isRightSidebarCollapsed ? "px-8 py-4 max-w-7xl" : 
-          (isLeftSidebarCollapsed || isRightSidebarCollapsed) ? "px-6 py-4 max-w-6xl" : 
-          "px-4 py-4 max-w-5xl"
-        )}>
-          <div className="flex items-center gap-4 overflow-x-auto pb-2 scrollbar-none">
-            {/* Seu Story */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.2 }}
-              onClick={() => setCurrentPage('create-event')}
-            >
+    <div className="w-full bg-card/80 backdrop-blur-sm py-4">
+      <div className="flex items-center gap-4 overflow-x-auto pb-2 scrollbar-none">
+        {/* Seu Story */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.2 }}
+          onClick={() => setCurrentPage('create-event')}
+        >
+          <div className="relative cursor-pointer group">
+            <div className="w-20 h-20 rounded-full p-[2px] bg-muted/40 group-hover:scale-105 transition-all duration-200">
+              <Avatar className="w-full h-full ring-1 ring-background/60">
+                <AvatarImage src="/eu.jpeg" alt="Seu Story" />
+                <AvatarFallback className="bg-gradient-to-br from-primary/70 to-primary text-primary-foreground font-bold text-lg">
+                  V
+                </AvatarFallback>
+              </Avatar>
+            </div>
+            
+            <p className="text-xs text-foreground text-center mt-2 font-medium truncate w-20">
+              Seu story
+            </p>
+          </div>
+        </motion.div>
+
+        {/* Stories dos outros */}
+        {stories.map((story, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.2, delay: index * 0.1 }}
+            onClick={() => openStory(story.storyIndex)}
+          >
               <div className="relative cursor-pointer group">
-                <div className="w-20 h-20 rounded-full p-[2px] bg-muted/40 group-hover:scale-105 transition-all duration-200">
+                <div className={`
+                  w-20 h-20 rounded-full p-[2px] transition-all duration-200
+                  ${story.user.hasStory 
+                    ? story.user.isViewed 
+                      ? 'bg-gradient-to-tr from-muted-foreground/40 to-muted-foreground/40' 
+                      : 'bg-gradient-to-tr from-primary/70 to-primary/90'
+                    : 'bg-muted/40'
+                  }
+                  group-hover:scale-105
+                `}>
                   <Avatar className="w-full h-full ring-1 ring-background/60">
-                    <AvatarImage src="/eu.jpeg" alt="Seu Story" />
+                    <AvatarImage src={story.user.image} alt={story.user.name} />
                     <AvatarFallback className="bg-gradient-to-br from-primary/70 to-primary text-primary-foreground font-bold text-lg">
-                      V
+                      {story.user.name.charAt(0).toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
                 </div>
                 
                 <p className="text-xs text-foreground text-center mt-2 font-medium truncate w-20">
-                  Seu story
+                  {story.user.name}
                 </p>
               </div>
-            </motion.div>
-
-            {/* Stories dos outros */}
-            {stories.map((story, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.2, delay: index * 0.1 }}
-                onClick={() => openStory(story.storyIndex)}
-              >
-                  <div className="relative cursor-pointer group">
-                    <div className={`
-                      w-20 h-20 rounded-full p-[2px] transition-all duration-200
-                      ${story.user.hasStory 
-                        ? story.user.isViewed 
-                          ? 'bg-gradient-to-tr from-muted-foreground/40 to-muted-foreground/40' 
-                          : 'bg-gradient-to-tr from-primary/70 to-primary/90'
-                        : 'bg-muted/40'
-                      }
-                      group-hover:scale-105
-                    `}>
-                      <Avatar className="w-full h-full ring-1 ring-background/60">
-                        <AvatarImage src={story.user.image} alt={story.user.name} />
-                        <AvatarFallback className="bg-gradient-to-br from-primary/70 to-primary text-primary-foreground font-bold text-lg">
-                          {story.user.name.charAt(0).toUpperCase()}
-                        </AvatarFallback>
-                      </Avatar>
-                    </div>
-                    
-                    <p className="text-xs text-foreground text-center mt-2 font-medium truncate w-20">
-                      {story.user.name}
-                    </p>
-                  </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+          </motion.div>
+        ))}
       </div>
     </div>
   )
