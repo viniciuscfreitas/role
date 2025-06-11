@@ -8,6 +8,8 @@ import { Input } from '@/components/ui/input'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
+import { formatDistanceToNow } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 
 interface Comment {
   id: string
@@ -50,7 +52,7 @@ const mockComments: Comment[] = [
       image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
     },
     text: 'Que show incrível! 🔥',
-    timestamp: new Date('2024-12-20T21:00:00'),
+    timestamp: new Date(Date.now() - 30 * 60 * 1000), // 30 minutos atrás
     likes: 12,
     isLiked: false
   },
@@ -62,7 +64,7 @@ const mockComments: Comment[] = [
       verified: true
     },
     text: 'Também estava lá! A energia estava incrível 💃',
-    timestamp: new Date('2024-12-20T21:15:00'),
+    timestamp: new Date(Date.now() - 15 * 60 * 1000), // 15 minutos atrás
     likes: 8,
     isLiked: true
   }
@@ -78,16 +80,16 @@ const photoPostsData: Post[] = [
       isFollowing: false
     },
     images: [
-      'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=600&h=600&fit=crop'
+      'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1080&h=1350&fit=crop',
+      'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=1080&h=1350&fit=crop',
+      'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=1080&h=1350&fit=crop'
     ],
     caption: 'Show incrível hoje! A energia estava contagiante 🎵✨ #música #festa #energia',
     location: 'Club Rooftop',
     likes: 142,
     comments: mockComments,
     shares: 8,
-    timestamp: new Date('2024-12-20T20:30:00'),
+    timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 horas atrás
     isLiked: false,
     isSaved: false
   },
@@ -100,14 +102,14 @@ const photoPostsData: Post[] = [
       isFollowing: true
     },
     images: [
-      'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=600&fit=crop'
+      'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=1080&h=1350&fit=crop'
     ],
     caption: 'Festival de música eletrônica foi demais! 🎧🔥 Próximo evento em Janeiro!',
     location: 'Arena Eventos',
     likes: 567,
     comments: [],
     shares: 34,
-    timestamp: new Date('2024-12-20T22:00:00'),
+    timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3 dias atrás
     isLiked: true,
     isSaved: false
   },
@@ -120,15 +122,15 @@ const photoPostsData: Post[] = [
       isFollowing: false
     },
     images: [
-      'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&h=600&fit=crop'
+      'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1080&h=1350&fit=crop',
+      'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1080&h=1350&fit=crop'
     ],
     caption: 'Networking incrível no Tech Meetup! Tantas conexões novas 💻🤝 #tech #networking',
     location: 'Innovation Hub',
     likes: 89,
     comments: [],
     shares: 15,
-    timestamp: new Date('2024-12-20T14:20:00'),
+    timestamp: new Date(Date.now() - 2 * 7 * 24 * 60 * 60 * 1000), // 2 semanas atrás
     isLiked: false,
     isSaved: true
   }
@@ -161,7 +163,7 @@ function ImageCarousel({ images }: { images: string[] }) {
   }
 
   return (
-    <div className="relative aspect-square group">
+    <div className="relative aspect-[4/5] max-h-[600px] group">
       <motion.img
         key={currentIndex}
         src={images[currentIndex]}
@@ -256,10 +258,10 @@ function PhotoPost({ post }: { post: Post }) {
     <motion.article
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-card border border-border rounded-xl overflow-hidden shadow-sm"
+      className="bg-card border border-border rounded-xl overflow-hidden shadow-sm max-w-[470px] mx-auto"
     >
       {/* Header */}
-      <div className="flex items-center justify-between p-4 pb-3">
+      <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center gap-3">
           <Avatar className="w-10 h-10 cursor-pointer">
             <AvatarImage src={post.user.image} alt={post.user.name} />
@@ -327,8 +329,8 @@ function PhotoPost({ post }: { post: Post }) {
       <ImageCarousel images={post.images} />
 
       {/* Actions */}
-      <div className="p-4">
-        <div className="flex items-center justify-between mb-3">
+      <div className="px-4 py-3">
+        <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-4">
             <motion.button
               whileTap={{ scale: 0.9 }}
@@ -356,14 +358,14 @@ function PhotoPost({ post }: { post: Post }) {
         </div>
 
         {/* Likes */}
-        <div className="mb-2">
+        <div className="mb-1">
           <span className="font-semibold text-sm text-foreground cursor-pointer hover:text-primary transition-colors">
             {likes.toLocaleString()} curtidas
           </span>
         </div>
 
         {/* Caption */}
-        <div className="mb-2">
+        <div className="mb-1">
           <p className="text-sm text-foreground">
             <span className="font-semibold mr-2 cursor-pointer hover:text-primary transition-colors">
               {post.user.name}
@@ -375,14 +377,14 @@ function PhotoPost({ post }: { post: Post }) {
         {/* Comments */}
         {post.comments.length > 0 && (
           <button 
-            className="text-muted-foreground text-sm hover:text-foreground transition-colors mb-2 block"
+            className="text-muted-foreground text-sm hover:text-foreground transition-colors mb-1 block"
           >
             Ver todos os {post.comments.length} comentários
           </button>
         )}
 
         {/* Add comment */}
-        <div className="flex items-center gap-3 pt-2 border-t border-border">
+        <div className="flex items-center gap-3 pt-1 border-t border-border">
           <Smile className="w-5 h-5 text-muted-foreground cursor-pointer" />
           <Input
             value={newComment}
@@ -404,9 +406,9 @@ function PhotoPost({ post }: { post: Post }) {
         </div>
 
         {/* Timestamp */}
-        <div className="mt-2">
+        <div className="mt-1">
           <span className="text-xs text-muted-foreground cursor-pointer hover:text-foreground transition-colors">
-            {Math.floor((Date.now() - post.timestamp.getTime()) / (1000 * 60 * 60))} horas atrás
+            {formatDistanceToNow(post.timestamp, { addSuffix: true, locale: ptBR })}
           </span>
         </div>
       </div>
@@ -416,7 +418,7 @@ function PhotoPost({ post }: { post: Post }) {
 
 export function EventFeed() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {photoPostsData.map((post, index) => (
         <motion.div
           key={post.id}

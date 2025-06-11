@@ -35,10 +35,6 @@ function HomePage() {
         <div className="flex justify-center">
           <div className={cn(
             "w-full transition-all duration-300",
-            // Otimização baseada no cálculo real:
-            // Ambos colapsados: espaço total - 144px (72px + 72px) = máximo possível
-            // Um colapsado: espaço total - (72px + 320px) ou (256px + 72px) 
-            // Nenhum colapsado: espaço total - 576px (256px + 320px) = ainda muito espaço
             isLeftSidebarCollapsed && isRightSidebarCollapsed ? "px-8 py-4 max-w-7xl" : 
             (isLeftSidebarCollapsed || isRightSidebarCollapsed) ? "px-6 py-4 max-w-6xl" : 
             "px-4 py-4 max-w-5xl"

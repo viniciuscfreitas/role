@@ -57,10 +57,10 @@ export function EventPost({ post }: EventPostProps) {
     <motion.article
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-card border border-border rounded-lg overflow-hidden"
+      className="bg-card border border-border rounded-xl overflow-hidden shadow-sm max-w-[470px] mx-auto"
     >
       {/* Header do Post */}
-      <div className="flex items-center justify-between p-4 pb-3">
+      <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center gap-3">
           <Avatar className="w-10 h-10">
             <AvatarImage src={post.user.image} alt={post.user.name} />
@@ -86,7 +86,7 @@ export function EventPost({ post }: EventPostProps) {
       </div>
 
       {/* Imagem do Evento */}
-      <div className="relative aspect-square bg-muted">
+      <div className="relative aspect-[4/5] max-h-[600px] bg-muted">
         <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center">
           <Calendar className="w-20 h-20 text-muted-foreground" />
         </div>
@@ -99,7 +99,7 @@ export function EventPost({ post }: EventPostProps) {
       </div>
 
       {/* Ações do Post */}
-      <div className="p-4">
+      <div className="px-4 py-3">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-4">
             <motion.button

@@ -7,6 +7,8 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useNavigation } from '@/lib/contexts/navigation-context'
+import { formatDistanceToNow } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 
 // Mock stories data
 export const storiesData = [
@@ -21,7 +23,7 @@ export const storiesData = [
         id: '1-1',
         type: 'image',
         content: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=400&h=600&fit=crop',
-        timestamp: new Date('2024-12-20T20:30:00'),
+        timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000), // 4 horas atrás
         text: 'Show incrível hoje! 🎵',
         duration: 5000
       },
@@ -29,7 +31,7 @@ export const storiesData = [
         id: '1-2', 
         type: 'image',
         content: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=600&fit=crop',
-        timestamp: new Date('2024-12-20T21:15:00'),
+        timestamp: new Date(Date.now() - 3 * 60 * 60 * 1000), // 3 horas atrás
         text: 'After party foi demais! 🔥',
         duration: 5000
       }
@@ -46,7 +48,7 @@ export const storiesData = [
         id: '2-1',
         type: 'image',
         content: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=600&fit=crop',
-        timestamp: new Date('2024-12-20T14:20:00'),
+        timestamp: new Date(Date.now() - 8 * 60 * 60 * 1000), // 8 horas atrás
         text: 'Networking incrível no Tech Meetup! 💻',
         duration: 5000
       }
@@ -63,7 +65,7 @@ export const storiesData = [
         id: '3-1',
         type: 'image',
         content: 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=400&h=600&fit=crop',
-        timestamp: new Date('2024-12-20T22:00:00'),
+        timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 horas atrás
         text: 'Festival de música eletrônica 🎧',
         duration: 5000
       },
@@ -71,7 +73,7 @@ export const storiesData = [
         id: '3-2',
         type: 'image', 
         content: 'https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=400&h=600&fit=crop',
-        timestamp: new Date('2024-12-20T23:30:00'),
+        timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000), // 1 hora atrás
         text: 'Crowd incrível! 🙌',
         duration: 5000
       }
@@ -386,13 +388,7 @@ export function StoryViewer() {
   }
 
   const formatTime = (timestamp: Date) => {
-    const now = Date.now()
-    const diff = now - timestamp.getTime()
-    const hours = Math.floor(diff / (1000 * 60 * 60))
-    
-    if (hours < 1) return 'agora'
-    if (hours < 24) return `${hours}h`
-    return `${Math.floor(hours / 24)}d`
+    return formatDistanceToNow(timestamp, { addSuffix: true, locale: ptBR })
   }
 
   if (!isStoryViewerOpen || !currentUserStories || !currentStory) {
