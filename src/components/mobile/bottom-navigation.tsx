@@ -28,9 +28,9 @@ export function BottomNavigation() {
   }
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-lg">
-      {/* Safe area padding for devices with home indicator */}
-      <div className="pb-safe">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-slate-800 shadow-lg">
+      {/* Safe area padding for devices with home indicator - similar to Instagram */}
+      <div className="pb-8 safe-area-inset-bottom">
         <div className="flex items-center justify-around px-2 py-2">
           {navItems.map((item) => {
             const isActive = currentPage === item.id
@@ -43,10 +43,10 @@ export function BottomNavigation() {
                 className={cn(
                   "relative flex flex-col items-center justify-center min-w-[44px] min-h-[44px] rounded-xl transition-colors",
                   isCreateButton
-                    ? "bg-blue-600 text-white p-3 shadow-lg"
+                    ? "bg-purple-600 dark:bg-purple-500 text-white p-3 shadow-lg"
                     : isActive
-                      ? "text-blue-600"
-                      : "text-gray-600 hover:text-gray-900"
+                      ? "text-purple-600 dark:text-purple-400"
+                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
                 )}
                 whileTap={{ scale: 0.95 }}
                 whileHover={{ scale: isCreateButton ? 1.05 : 1.02 }}
@@ -71,7 +71,9 @@ export function BottomNavigation() {
                 {!isCreateButton && (
                   <span className={cn(
                     "text-xs mt-1 font-medium transition-colors",
-                    isActive ? "text-blue-600" : "text-gray-600"
+                    isActive 
+                      ? "text-purple-600 dark:text-purple-400" 
+                      : "text-gray-600 dark:text-gray-400"
                   )}>
                     {item.label}
                   </span>
@@ -80,7 +82,7 @@ export function BottomNavigation() {
                 {/* Active indicator */}
                 {isActive && !isCreateButton && (
                   <motion.div
-                    className="absolute -top-1 w-1 h-1 bg-blue-600 rounded-full"
+                    className="absolute -top-1 w-1 h-1 bg-purple-600 dark:bg-purple-400 rounded-full"
                     layoutId="activeTab"
                     transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
                   />
@@ -89,7 +91,7 @@ export function BottomNavigation() {
                 {/* Badge for notifications */}
                 {item.badge && item.badge > 0 && (
                   <motion.div
-                    className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground text-xs rounded-full min-w-[18px] h-[18px] flex items-center justify-center font-bold"
+                    className="absolute -top-1 -right-1 bg-red-500 dark:bg-red-400 text-white dark:text-red-950 text-xs rounded-full min-w-[18px] h-[18px] flex items-center justify-center font-bold"
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ duration: 0.2 }}
