@@ -881,3 +881,14 @@ xl: '1280px'  // Extra large devices
   - **Solução Futura**: Aguardar atualização do @types/next-pwa para Next.js 15 ou usar versão compatível
   - **Lição**: Sempre testar build local antes de deploy em produção
   - **Comando**: `npm run build` para detectar erros de tipos antes do deploy 
+- **🎨 BOTTOM NAVIGATION THEME FIX**: Correção completa do tema dark/light
+  - **Root Cause**: Bottom navigation sempre branco e usando azul genérico em vez das cores do tema
+  - **Problema Específico**: Não respeitava dark mode e usava cores fora do design system
+  - **Solução Implementada**: 
+    - Cores explícitas: `bg-white dark:bg-slate-900` para fundo
+    - Tema purple: `text-purple-600 dark:text-purple-400` (cores primárias do ROLE)
+    - Padding iOS/Android: `pb-8` para respeitar home indicator
+    - Dark mode completo: bordas, textos, ícones e estados
+  - **Lição**: Sempre usar cores explícitas e seguir o design system estabelecido
+  - **Aplicação**: Bottom navigation agora integrado perfeitamente com tema light/dark
+  - **Resultado**: Consistência visual 100% com resto da aplicação 
