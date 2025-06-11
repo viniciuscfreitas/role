@@ -30,13 +30,13 @@ export function BottomNavigation() {
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 border-t shadow-lg"
          style={{
-           backgroundColor: 'rgb(250 251 252)', // light: --background
+           backgroundColor: 'rgb(255 255 255)', // light: --card (mesma cor do sidebar)
            borderTopColor: 'rgb(226 232 240)', // light: --border
          }}>
       {/* Dark theme overlay */}
       <div className="dark:block hidden absolute inset-0"
            style={{
-             backgroundColor: 'rgb(12 16 23)', // dark: --background
+             backgroundColor: 'rgb(20 25 34)', // dark: --card (mesma cor do sidebar)
              borderTop: '1px solid rgb(30 41 59)', // dark: --border
            }} />
            

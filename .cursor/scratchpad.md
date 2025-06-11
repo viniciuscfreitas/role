@@ -60,7 +60,7 @@ O usuário reportou que vários componentes estão transparentes quando não dev
 **Sidebar (src/components/sidebar.tsx)**:
 ```tsx
 // LINHA 41 - PROBLEMA IDENTIFICADO
-className="fixed left-0 top-0 h-screen bg-card/80 backdrop-blur-sm z-50"
+className="fixed left-0 top-0 h-screen bg-card border-r border-border shadow-lg z-50"
 //                                              ^^^^^^^^^^^^^^^^^^^^
 //                                              INTENCIONALMENTE SEMI-TRANSPARENTE
 ```
@@ -895,3 +895,183 @@ xl: '1280px'  // Extra large devices
   - **Lição**: Sempre usar cores explícitas e seguir o design system estabelecido
   - **Aplicação**: Bottom navigation agora integrado perfeitamente com tema light/dark
   - **Resultado**: Consistência visual 100% com resto da aplicação 
+
+## 🎯 **NOVA REQUISIÇÃO - PLANNER MODE**
+
+### Background da Requisição Atual:
+O usuário solicitou que o **bottom-navigation utilize as mesmas cores do sidebar**, mas **sem transparência/blur** e sim com **cores explícitas com fallback**. Precisa ter cores específicas para light-theme e dark-theme, e no final dar commit e push.
+
+### Análise Técnica (PLANNER):
+
+#### 1. **Situação Atual do Sidebar**
+**Arquivo**: `src/components/sidebar.tsx` (Linha 47)
+**Implementação Atual**:
+```tsx
+className="fixed left-0 top-0 h-screen bg-card border-r border-border shadow-lg z-50"
+```
+**Análise**: 
+- ✅ **Usando variáveis CSS**: `bg-card` e `border-border`
+- ✅ **Sem transparência**: Removido o `/80 backdrop-blur-sm`
+- ✅ **Funcional**: Sidebar está sólido e opaco
+
+#### 2. **Situação Atual do Bottom Navigation**
+**Arquivo**: `src/components/mobile/bottom-navigation.tsx`
+**Implementação Atual**:
+```tsx
+// Usando cores RGB explícitas inline
+style={{
+  backgroundColor: 'rgb(250 251 252)', // light: --background
+  borderTopColor: 'rgb(226 232 240)', // light: --border
+}}
+```
+**Problema Identificado**:
+- ❌ **Inconsistência**: Sidebar usa `bg-card`, Bottom Nav usa `--background`
+- ❌ **Cores diferentes**: Sidebar usa `--card` e Bottom Nav usa `--background`
+- ❌ **Manutenção difícil**: Cores hardcoded vs variáveis CSS
+
+#### 3. **Análise das Variáveis CSS do Design System**
+**Do arquivo `globals.css`**:
+```css
+/* Light theme */
+--card: 255 255 255;          /* Branco puro - USADO NO SIDEBAR */
+--background: 250 251 252;    /* Branco acinzentado - USADO NO BOTTOM NAV */
+--border: 226 232 240;        /* Cinza claro */
+
+/* Dark theme */  
+--card: 20 25 34;            /* Azul escuro - USADO NO SIDEBAR */
+--background: 12 16 23;      /* Preto azulado - USADO NO BOTTOM NAV */
+--border: 30 41 59;          /* Cinza escuro */
+```
+
+### Plano de Implementação (PLANNER)
+
+#### **OBJETIVO PRINCIPAL**
+Alinhar o bottom-navigation com as **mesmas cores do sidebar** usando **cores explícitas** sem transparência, mantendo diferenciação entre light/dark theme.
+
+#### **SOLUÇÃO ESTRATÉGICA**
+O sidebar usa `bg-card` (branco puro/azul escuro), então o bottom-navigation deve usar as **mesmas cores RGB do `--card`** em vez do `--background`.
+
+### High-level Task Breakdown
+
+#### **Task BN.1: Análise das Cores do Sidebar** 
+- **Objetivo**: Extrair as cores RGB exatas que o sidebar está usando
+- **Ações**:
+  - Verificar `--card` values no `globals.css`
+  - Light theme: `rgb(255 255 255)` (branco puro)
+  - Dark theme: `rgb(20 25 34)` (azul escuro)
+  - Verificar `--border` values para bordas
+  - Light theme: `rgb(226 232 240)` 
+  - Dark theme: `rgb(30 41 59)`
+- **Critério de Sucesso**: Colors RGB identificadas corretamente
+- **Tempo Estimado**: 10 minutos
+
+#### **Task BN.2: Atualizar Bottom Navigation com Cores do Sidebar**
+- **Objetivo**: Substituir cores do background por cores do card (mesmas do sidebar)
+- **Ações**:
+  - Alterar `backgroundColor: 'rgb(250 251 252)'` → `'rgb(255 255 255)'` (light)
+  - Alterar dark theme `'rgb(12 16 23)'` → `'rgb(20 25 34)'` (dark)
+  - Manter bordas com cores corretas de `--border`
+  - Verificar que cores primárias permanecem corretas
+  - Testar visual consistency entre sidebar e bottom nav
+- **Critério de Sucesso**: Bottom nav com exatamente as mesmas cores de fundo do sidebar
+- **Tempo Estimado**: 20 minutos
+
+#### **Task BN.3: Verificação Visual e Testes**
+- **Objetivo**: Garantir consistency visual perfeita
+- **Ações**:
+  - Testar em light theme: sidebar e bottom nav com `rgb(255 255 255)`
+  - Testar em dark theme: sidebar e bottom nav com `rgb(20 25 34)`
+  - Verificar bordas e sombras matching
+  - Confirmar que não há transparência indesejada
+  - Validar em diferentes browsers/devices
+- **Critério de Sucesso**: Visual consistency 100% entre componentes
+- **Tempo Estimado**: 15 minutos
+
+#### **Task BN.4: Commit e Deploy**
+- **Objetivo**: Finalizar implementação com git workflow
+- **Ações**:
+  - Git add das alterações
+  - Commit com mensagem descritiva clara
+  - Push para repositório remoto
+  - Verificar deploy automático no Vercel
+- **Critério de Sucesso**: Mudanças deployadas e funcionais em produção
+- **Tempo Estimado**: 10 minutos
+
+### Project Status Board
+
+#### 🎯 **BOTTOM NAVIGATION COLOR ALIGNMENT**
+- [ ] **Task BN.1**: Análise das cores RGB do sidebar
+  - [ ] Extrair `--card` values do globals.css  
+  - [ ] Documentar cores light/dark theme
+  - [ ] Verificar `--border` colors
+- [ ] **Task BN.2**: Atualizar cores do bottom navigation
+  - [ ] Substituir background colors para match sidebar
+  - [ ] Aplicar cores explícitas RGB sem transparência
+  - [ ] Manter cores primárias e de texto corretas
+- [ ] **Task BN.3**: Verificação e testes visuais
+  - [ ] Testar consistency em light theme
+  - [ ] Testar consistency em dark theme  
+  - [ ] Validar ausência de transparência
+- [ ] **Task BN.4**: Git workflow e deploy
+  - [ ] Git add e commit
+  - [ ] Push para repositório
+  - [ ] Verificar deploy no Vercel
+
+### Key Challenges and Analysis
+
+#### **Desafio Principal**: Color Consistency
+- **Problema**: Sidebar usa `--card` e Bottom Nav usa `--background` 
+- **Solução**: Alinhar ambos para usar cores de `--card`
+- **Impacto**: Visual consistency perfeita entre componentes
+
+#### **Desafio Técnico**: Cores Explícitas vs CSS Variables
+- **Lição Aprendida**: CSS variables causam transparência indesejada
+- **Abordagem**: Usar RGB values explícitos extraídos das CSS variables
+- **Benefício**: 100% control sobre opacidade e visual appearance
+
+#### **Considerações de Design**:
+- Sidebar e Bottom Navigation devem ter **exatamente o mesmo background**
+- Manter diferenciação clara entre light/dark themes
+- Preservar hierarchy visual e usability
+
+### Current Status / Progress Tracking
+
+**Status Atual**: 🟡 PLANNING PHASE
+- ✅ **Análise completa realizada** - problema identificado
+- ✅ **Solução estratégica definida** - usar cores do `--card`
+- ✅ **Tasks detalhadas criadas** - plano de 4 steps
+- 🟡 **Aguardando aprovação** - ready para execution phase
+
+**Próximo Passo**: Aguardar autorização do usuário para iniciar **EXECUTOR MODE**
+
+**Tempo Total Estimado**: 55 minutos (análise + implementação + testes + deploy)
+
+## Executor's Feedback or Assistance Requests
+
+### 🎯 **PLANNER COMPLETO - SOLUÇÃO DEFINIDA** ⭐
+
+**ANÁLISE FINALIZADA:**
+- ✅ **Problema identificado**: Inconsistência de cores entre sidebar e bottom navigation
+- ✅ **Root cause**: Sidebar usa `--card`, Bottom Nav usa `--background`  
+- ✅ **Solução clara**: Alinhar ambos para cores de `--card` com RGB explícitos
+- ✅ **Plano detalhado**: 4 tasks sequenciais com critérios de sucesso
+
+**CORES CORRETAS IDENTIFICADAS:**
+- **Light Theme**: `rgb(255 255 255)` (branco puro - mesmo do sidebar)
+- **Dark Theme**: `rgb(20 25 34)` (azul escuro - mesmo do sidebar)
+- **Borders**: Manter `--border` colors já corretas
+
+**PRONTO PARA EXECUÇÃO:**
+- Plano técnico completamente definido
+- Critérios de sucesso claros
+- Tempo estimado: ~55 minutos total
+- Git workflow incluído no plano
+
+### ⚠️ **AGUARDANDO AUTORIZAÇÃO:**
+
+**Para prosseguir com a implementação, o usuário deve:**
+1. **Aprovar o plano** apresentado acima
+2. **Autorizar EXECUTOR MODE** para implementar as mudanças
+3. **Confirmar** que as cores do sidebar (bg-card) são as desejadas
+
+**PRÓXIMA AÇÃO**: Aguardando autorização para iniciar **EXECUTOR MODE**
