@@ -873,4 +873,11 @@ xl: '1280px'  // Extra large devices
   - **Solução Final**: Usar cores explícitas `bg-white dark:bg-slate-900` em vez de variáveis CSS
   - **Lição**: Quando transparência é problema, sempre usar cores explícitas com fallback
   - **Aplicação**: Sidebars, Bottom Navigation, Cards - todos corrigidos com cores sólidas
-  - **Resultado**: 100% opaco garantido, sem dependência de CSS variables problemáticas 
+  - **Resultado**: 100% opaco garantido, sem dependência de CSS variables problemáticas
+- **🚀 VERCEL DEPLOY ERROR**: Problema de TypeScript com next-pwa resolvido
+  - **Root Cause**: Conflito de tipos entre Next.js 15 e @types/next-pwa (I18NConfig incompatível)
+  - **Erro Específico**: `Type 'I18NDomains' is 'readonly' and cannot be assigned to the mutable type 'DomainLocale[]'`
+  - **Solução Temporária**: Remover next-pwa do next.config.ts para permitir deploy
+  - **Solução Futura**: Aguardar atualização do @types/next-pwa para Next.js 15 ou usar versão compatível
+  - **Lição**: Sempre testar build local antes de deploy em produção
+  - **Comando**: `npm run build` para detectar erros de tipos antes do deploy 
