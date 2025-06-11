@@ -286,7 +286,7 @@ export function MapPage() {
   return (
     <div className="h-screen flex flex-col bg-background overflow-hidden">
       {/* Header */}
-      <div className="bg-card/80 backdrop-  -sm border-b border-border p-4 flex-shrink-0">
+              <div className="bg-card border-b border-border p-4 flex-shrink-0 shadow-sm">
         <div className="flex items-center justify-between mb-4">
           <div>
             <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
@@ -413,7 +413,7 @@ export function MapPage() {
         {(viewMode === 'grid' || viewMode === 'split') && (
           <div className={`${
             viewMode === 'split' 
-              ? 'w-80 bg-card/80 backdrop-blur-sm border-l border-border' 
+              ? 'w-80 bg-card border-l border-border shadow-lg' 
               : 'w-full bg-background'
           }`}>
             <div className="p-4 h-full flex flex-col">

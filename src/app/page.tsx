@@ -1,7 +1,8 @@
 'use client'
 
-import { Sidebar } from '@/components/sidebar'
 import { Stories } from '@/components/stories'
+import { MobileStories } from '@/components/adaptive/mobile-stories'
+import { MobileFeed } from '@/components/adaptive/mobile-feed'
 import { StoryViewer } from '@/components/story-viewer'
 import { LoginPage } from '@/components/login-page'
 import { LoadingSpinner } from '@/components/ui/loading-spinner'
@@ -17,12 +18,29 @@ import { ProfilePage } from '@/components/profile-page'
 import { CreateEventPage } from '@/components/create-event-page'
 import { MapPage } from '@/components/map-page'
 import { cn } from '@/lib/utils'
-import { RightSidebar } from '@/components/right-sidebar'
+import { AdaptiveLayout } from '@/components/adaptive/adaptive-layout'
+import { MobileLayoutProvider } from '@/lib/contexts/mobile-layout-context'
+import { useMobileLayout } from '@/lib/contexts/mobile-layout-context'
 import { useSidebar } from '@/lib/contexts/sidebar-context'
 
 function HomePage() {
+  const { shouldUseMobileLayout } = useMobileLayout()
   const { isLeftSidebarCollapsed, isRightSidebarCollapsed } = useSidebar()
 
+  // Mobile Layout
+  if (shouldUseMobileLayout) {
+    return (
+      <div className="min-h-screen bg-background">
+        {/* Mobile Stories - não fixos, rolam junto com o feed */}
+        <MobileStories />
+        
+        {/* Mobile Feed */}
+        <MobileFeed />
+      </div>
+    )
+  }
+
+  // Desktop Layout
   return (
     <div className="h-screen flex flex-col bg-background">
       {/* Stories fixos no topo */}
@@ -49,7 +67,6 @@ function HomePage() {
 
 function AuthenticatedFeed() {
   const { currentPage } = useNavigation()
-  const { isLeftSidebarCollapsed, isRightSidebarCollapsed } = useSidebar()
 
   const renderPage = () => {
     switch (currentPage) {
@@ -77,33 +94,18 @@ function AuthenticatedFeed() {
   }
 
   return (
-    <div className="flex min-h-screen bg-background">
-      {/* Sidebar esquerda fixa */}
-      <Sidebar />
-      
-      {/* Container principal */}
-      <main className={cn(
-        "flex-1 transition-all duration-300 flex flex-col",
-        isLeftSidebarCollapsed ? "ml-[72px]" : "ml-64",
-        currentPage === 'home' && (isRightSidebarCollapsed ? "mr-[72px]" : "mr-80")
-      )}>
-        <div className="w-full max-w-[1600px] mx-auto">
-          <motion.div
-            key={currentPage}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.3 }}
-            className="w-full"
-          >
-            {renderPage()}
-          </motion.div>
-        </div>
-      </main>
-      
-      {/* Sidebar direita fixa - apenas na home */}
-      {currentPage === 'home' && <RightSidebar />}
-    </div>
+    <AdaptiveLayout>
+      <motion.div
+        key={currentPage}
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: -20 }}
+        transition={{ duration: 0.3 }}
+        className="w-full"
+      >
+        {renderPage()}
+      </motion.div>
+    </AdaptiveLayout>
   )
 }
 
@@ -124,11 +126,11 @@ export default function MainPage() {
     return <LoginPage />
   }
 
-  // Se há usuário logado, mostrar o app
+  // Se há usuário logado, mostrar o app com layout adaptativo
   return (
-    <>
+    <MobileLayoutProvider>
       <AuthenticatedFeed />
       <StoryViewer />
-    </>
+    </MobileLayoutProvider>
   )
 }

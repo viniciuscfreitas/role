@@ -184,7 +184,7 @@ export function LoginPage() {
           className="w-full max-w-md mx-auto space-y-6"
         >
           {/* Main form card */}
-          <Card className="bg-card/80 backdrop-blur-sm border border-border shadow-xl">
+          <Card className="bg-card border border-border shadow-xl">
             <CardHeader className="text-center pb-6">
               <div className="mx-auto mb-6">
                 <div className="w-20 h-20 bg-gradient-to-br from-primary/80 to-primary rounded-2xl flex items-center justify-center shadow-lg">
@@ -334,7 +334,7 @@ export function LoginPage() {
           </Card>
 
           {/* Switch between login/register */}
-          <Card className="bg-card/80 backdrop-blur-sm border border-border">
+                        <Card className="bg-card border border-border shadow-sm">
             <CardContent className="py-6 text-center">
               <p className="text-muted-foreground">
                 {isLogin ? 'Não tem uma conta?' : 'Já tem uma conta?'}

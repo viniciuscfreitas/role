@@ -92,7 +92,7 @@ export function Stories() {
   }
 
   return (
-    <div className="w-full bg-card/80 backdrop-blur-sm">
+            <div className="w-full bg-card border-b border-border">
       <div className="flex justify-center">
         <div className={cn(
           "w-full transition-all duration-300",

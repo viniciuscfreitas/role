@@ -191,7 +191,7 @@ export function ProfilePage() {
       >
         <Tabs defaultValue="fotos" className="w-full">
           <div className="flex justify-center">
-            <TabsList className="p-1 bg-muted/50 backdrop-blur-sm sticky top-0 z-10 w-fit">
+            <TabsList className="p-1 bg-card border border-border sticky top-0 z-10 w-fit shadow-sm">
               <TabsTrigger 
                 value="fotos" 
                 className="flex items-center gap-2 data-[state=active]:bg-background data-[state=active]:shadow-sm transition-all px-6"

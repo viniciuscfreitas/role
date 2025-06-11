@@ -65,7 +65,7 @@ export function RightSidebar() {
   return (
     <motion.div
       className={cn(
-        "fixed right-0 top-0 h-screen bg-card/80 backdrop-blur-sm z-40 transition-all duration-300",
+        "fixed right-0 top-0 h-screen bg-card border-l border-border shadow-lg z-40 transition-all duration-300",
         isCollapsed ? "w-[72px]" : "w-80"
       )}
       layout
