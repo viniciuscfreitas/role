@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { LoadingSpinner } from '@/components/ui/loading-spinner'
 import { useAuth } from '@/lib/contexts/auth-context'
 import { useState } from 'react'
 import { Calendar, ArrowLeft, Eye, EyeOff } from 'lucide-react'
@@ -111,7 +112,11 @@ export default function SignInPage() {
                 className="w-full"
                 disabled={isLoading}
               >
-                {isLoading ? 'Entrando...' : 'Entrar'}
+                {isLoading ? (
+                  <LoadingSpinner size="sm" className="gap-0" />
+                ) : (
+                  'Entrar'
+                )}
               </Button>
             </form>
 
