@@ -101,7 +101,7 @@ function MapEventCard({ event }: { event: typeof mapEventsData[0] }) {
             <div className="flex items-center gap-3">
               <Avatar className="w-10 h-10">
                 <AvatarImage src={event.organizer.image} alt={event.organizer.name} />
-                <AvatarFallback className="bg-gradient-to-br from-primary/80 to-primary text-white">
+                <AvatarFallback className="bg-gradient-to-br from-primary/80 to-primary text-primary-foreground">
                   {event.organizer.name.charAt(0)}
                 </AvatarFallback>
               </Avatar>

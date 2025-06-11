@@ -79,7 +79,7 @@ export function LoginPage() {
             >
               <div className="relative">
                 <div className="w-32 h-32 bg-gradient-to-br from-primary/80 to-primary rounded-3xl flex items-center justify-center shadow-2xl mx-auto">
-                  <Zap className="h-16 w-16 text-white" strokeWidth={2.5} />
+                  <Zap className="h-16 w-16 text-primary-foreground" strokeWidth={2.5} />
                 </div>
                 {/* Floating elements around logo */}
                 <motion.div 
@@ -87,21 +87,21 @@ export function LoginPage() {
                   animate={{ rotate: 360 }}
                   transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
                 >
-                  <Sparkles className="h-4 w-4 text-white" />
+                  <Sparkles className="h-4 w-4 text-primary-foreground" />
                 </motion.div>
                 <motion.div 
                   className="absolute -bottom-2 -left-6 w-6 h-6 bg-gradient-to-r from-primary/70 to-primary rounded-full flex items-center justify-center"
                   animate={{ y: [-5, 5, -5] }}
                   transition={{ duration: 3, repeat: Infinity }}
                 >
-                  <Music className="h-3 w-3 text-white" />
+                  <Music className="h-3 w-3 text-primary-foreground" />
                 </motion.div>
                 <motion.div 
                   className="absolute top-8 -left-8 w-6 h-6 bg-gradient-to-r from-primary/60 to-primary rounded-full flex items-center justify-center"
                   animate={{ x: [-3, 3, -3] }}
                   transition={{ duration: 4, repeat: Infinity }}
                 >
-                  <Camera className="h-3 w-3 text-white" />
+                  <Camera className="h-3 w-3 text-primary-foreground" />
                 </motion.div>
               </div>
             </motion.div>
@@ -135,7 +135,7 @@ export function LoginPage() {
           >
             <div className="text-center space-y-3">
               <div className="w-12 h-12 bg-gradient-to-br from-primary/80 to-primary rounded-xl flex items-center justify-center mx-auto">
-                <Calendar className="h-6 w-6 text-white" />
+                <Calendar className="h-6 w-6 text-primary-foreground" />
               </div>
               <div>
                 <h3 className="font-semibold text-foreground">Eventos Únicos</h3>
@@ -145,7 +145,7 @@ export function LoginPage() {
             
             <div className="text-center space-y-3">
               <div className="w-12 h-12 bg-gradient-to-br from-primary/80 to-primary rounded-xl flex items-center justify-center mx-auto">
-                <Users className="h-6 w-6 text-white" />
+                <Users className="h-6 w-6 text-primary-foreground" />
               </div>
               <div>
                 <h3 className="font-semibold text-foreground">Comunidade</h3>
@@ -155,7 +155,7 @@ export function LoginPage() {
             
             <div className="text-center space-y-3">
               <div className="w-12 h-12 bg-gradient-to-br from-primary/80 to-primary rounded-xl flex items-center justify-center mx-auto">
-                <MapPin className="h-6 w-6 text-white" />
+                <MapPin className="h-6 w-6 text-primary-foreground" />
               </div>
               <div>
                 <h3 className="font-semibold text-foreground">Local</h3>
@@ -165,7 +165,7 @@ export function LoginPage() {
             
             <div className="text-center space-y-3">
               <div className="w-12 h-12 bg-gradient-to-br from-primary/80 to-primary rounded-xl flex items-center justify-center mx-auto">
-                <Heart className="h-6 w-6 text-white" />
+                <Heart className="h-6 w-6 text-primary-foreground" />
               </div>
               <div>
                 <h3 className="font-semibold text-foreground">Memórias</h3>
@@ -187,7 +187,7 @@ export function LoginPage() {
             <CardHeader className="text-center pb-6">
               <div className="mx-auto mb-6">
                 <div className="w-20 h-20 bg-gradient-to-br from-primary/80 to-primary rounded-2xl flex items-center justify-center shadow-lg">
-                  <Zap className="h-10 w-10 text-white" strokeWidth={2.5} />
+                  <Zap className="h-10 w-10 text-primary-foreground" strokeWidth={2.5} />
                 </div>
               </div>
               <CardTitle className="text-3xl font-bold text-foreground">

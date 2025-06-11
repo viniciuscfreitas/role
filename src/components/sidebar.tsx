@@ -65,7 +65,7 @@ export function Sidebar() {
             animate={{ rotate: isCollapsed ? 180 : 0 }}
             transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
           >
-            <Zap className="h-5 w-5 text-white" strokeWidth={2.5} />
+            <Zap className="h-5 w-5 text-primary-foreground" strokeWidth={2.5} />
           </motion.div>
           {!isCollapsed && (
             <h1 className="text-xl font-bold text-foreground">

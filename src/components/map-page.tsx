@@ -125,7 +125,7 @@ function EventCard({ event, onSelect, searchQuery = '' }: { event: MapEvent; onS
         <div className="flex items-center gap-2 mb-3">
           <Avatar className="w-6 h-6">
             <AvatarImage src={event.organizerImage} alt={event.organizer} />
-            <AvatarFallback className="bg-primary text-white text-xs">
+                                  <AvatarFallback className="bg-primary text-primary-foreground text-xs">
               {event.organizer.charAt(0)}
             </AvatarFallback>
           </Avatar>

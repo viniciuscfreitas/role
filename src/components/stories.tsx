@@ -113,7 +113,7 @@ export function Stories() {
                 <div className="w-20 h-20 rounded-full p-[2px] bg-muted/40 group-hover:scale-105 transition-all duration-200">
                   <Avatar className="w-full h-full ring-1 ring-background/60">
                     <AvatarImage src="/eu.jpeg" alt="Seu Story" />
-                    <AvatarFallback className="bg-gradient-to-br from-primary/70 to-primary text-white font-bold text-lg">
+                    <AvatarFallback className="bg-gradient-to-br from-primary/70 to-primary text-primary-foreground font-bold text-lg">
                       V
                     </AvatarFallback>
                   </Avatar>
@@ -147,7 +147,7 @@ export function Stories() {
                     `}>
                       <Avatar className="w-full h-full ring-1 ring-background/60">
                         <AvatarImage src={story.user.image} alt={story.user.name} />
-                        <AvatarFallback className="bg-gradient-to-br from-primary/70 to-primary text-white font-bold text-lg">
+                        <AvatarFallback className="bg-gradient-to-br from-primary/70 to-primary text-primary-foreground font-bold text-lg">
                           {story.user.name.charAt(0).toUpperCase()}
                         </AvatarFallback>
                       </Avatar>

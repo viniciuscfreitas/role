@@ -263,7 +263,7 @@ function PhotoPost({ post }: { post: Post }) {
         <div className="flex items-center gap-3">
           <Avatar className="w-10 h-10 cursor-pointer">
             <AvatarImage src={post.user.image} alt={post.user.name} />
-            <AvatarFallback className="bg-gradient-to-br from-primary/80 to-primary text-white">
+                            <AvatarFallback className="bg-gradient-to-br from-primary/80 to-primary text-primary-foreground">
               {post.user.name.charAt(0)}
             </AvatarFallback>
           </Avatar>

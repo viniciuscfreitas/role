@@ -459,7 +459,7 @@ export function StoryViewer() {
             <div className="flex items-center gap-3">
               <Avatar className="w-8 h-8 ring-2 ring-white/50">
                 <AvatarImage src={currentUserStories.user.image} alt={currentUserStories.user.name} />
-                <AvatarFallback className="bg-gradient-to-br from-primary/80 to-primary text-white font-bold text-xs">
+                <AvatarFallback className="bg-gradient-to-br from-primary/80 to-primary text-primary-foreground font-bold text-xs">
                   {currentUserStories.user.name.charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>

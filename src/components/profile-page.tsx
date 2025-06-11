@@ -145,7 +145,7 @@ export function ProfilePage() {
         <div className="flex items-start gap-8">
           <Avatar className="w-32 h-32 ring-4 ring-primary/20">
             <AvatarImage src="/eu.jpeg" alt={user.name} />
-            <AvatarFallback className="bg-gradient-to-br from-primary/80 to-primary text-white text-3xl">
+            <AvatarFallback className="bg-gradient-to-br from-primary/80 to-primary text-primary-foreground text-3xl">
               {user.name.charAt(0).toUpperCase()}
             </AvatarFallback>
           </Avatar>
