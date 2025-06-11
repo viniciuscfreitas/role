@@ -874,6 +874,9 @@ xl: '1280px'  // Extra large devices
   - **Lição**: Quando transparência é problema, sempre usar cores explícitas com fallback
   - **Aplicação**: Sidebars, Bottom Navigation, Cards - todos corrigidos com cores sólidas
   - **Resultado**: 100% opaco garantido, sem dependência de CSS variables problemáticas
+  - **⚠️ REFORÇO CRÍTICO**: NUNCA usar `bg-background`, `text-primary` etc. - sempre cores explícitas
+  - **Exemplo Correto**: `bg-white dark:bg-slate-900` ✅ vs `bg-background` ❌
+  - **Motivo**: Variáveis CSS causam transparência indesejada em componentes críticos
 - **🚀 VERCEL DEPLOY ERROR**: Problema de TypeScript com next-pwa resolvido
   - **Root Cause**: Conflito de tipos entre Next.js 15 e @types/next-pwa (I18NConfig incompatível)
   - **Erro Específico**: `Type 'I18NDomains' is 'readonly' and cannot be assigned to the mutable type 'DomainLocale[]'`
