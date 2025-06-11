@@ -28,7 +28,7 @@ export function BottomNavigation() {
   }
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-border shadow-lg">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 shadow-lg">
       {/* Safe area padding for devices with home indicator - similar to Instagram */}
       <div className="pb-8 safe-area-inset-bottom">
         <div className="flex items-center justify-around px-2 py-2">
@@ -43,10 +43,10 @@ export function BottomNavigation() {
                 className={cn(
                   "relative flex flex-col items-center justify-center min-w-[44px] min-h-[44px] rounded-xl transition-colors",
                   isCreateButton
-                    ? "bg-primary text-primary-foreground p-3 shadow-lg"
+                    ? "bg-purple-700 dark:bg-purple-500 text-white p-3 shadow-lg"
                     : isActive
-                      ? "text-primary"
-                      : "text-muted-foreground hover:text-foreground"
+                      ? "text-purple-700 dark:text-purple-400"
+                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
                 )}
                 whileTap={{ scale: 0.95 }}
                 whileHover={{ scale: isCreateButton ? 1.05 : 1.02 }}
@@ -72,8 +72,8 @@ export function BottomNavigation() {
                   <span className={cn(
                     "text-xs mt-1 font-medium transition-colors",
                     isActive 
-                      ? "text-primary" 
-                      : "text-muted-foreground"
+                      ? "text-purple-700 dark:text-purple-400" 
+                      : "text-slate-600 dark:text-slate-400"
                   )}>
                     {item.label}
                   </span>
@@ -82,7 +82,7 @@ export function BottomNavigation() {
                 {/* Active indicator */}
                 {isActive && !isCreateButton && (
                   <motion.div
-                    className="absolute -top-1 w-1 h-1 bg-primary rounded-full"
+                    className="absolute -top-1 w-1 h-1 bg-purple-700 dark:bg-purple-400 rounded-full"
                     layoutId="activeTab"
                     transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
                   />
@@ -91,7 +91,7 @@ export function BottomNavigation() {
                 {/* Badge for notifications */}
                 {item.badge && item.badge > 0 && (
                   <motion.div
-                    className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground text-xs rounded-full min-w-[18px] h-[18px] flex items-center justify-center font-bold"
+                    className="absolute -top-1 -right-1 bg-red-600 dark:bg-red-500 text-white text-xs rounded-full min-w-[18px] h-[18px] flex items-center justify-center font-bold"
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ duration: 0.2 }}
