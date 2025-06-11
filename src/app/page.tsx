@@ -35,9 +35,13 @@ function HomePage() {
         <div className="flex justify-center">
           <div className={cn(
             "w-full transition-all duration-300",
-            isLeftSidebarCollapsed && isRightSidebarCollapsed ? "px-8 py-4 max-w-5xl" : 
-            (isLeftSidebarCollapsed || isRightSidebarCollapsed) ? "px-6 py-4 max-w-4xl" : 
-            "px-4 py-4 max-w-3xl"
+            // Otimização baseada no cálculo real:
+            // Ambos colapsados: espaço total - 144px (72px + 72px) = máximo possível
+            // Um colapsado: espaço total - (72px + 320px) ou (256px + 72px) 
+            // Nenhum colapsado: espaço total - 576px (256px + 320px) = ainda muito espaço
+            isLeftSidebarCollapsed && isRightSidebarCollapsed ? "px-8 py-4 max-w-7xl" : 
+            (isLeftSidebarCollapsed || isRightSidebarCollapsed) ? "px-6 py-4 max-w-6xl" : 
+            "px-4 py-4 max-w-5xl"
           )}>
             <EventFeed />
           </div>
@@ -87,7 +91,7 @@ function AuthenticatedFeed() {
         isLeftSidebarCollapsed ? "ml-[72px]" : "ml-64",
         currentPage === 'home' && (isRightSidebarCollapsed ? "mr-[72px]" : "mr-80")
       )}>
-        <div className="w-full max-w-[1400px] mx-auto">
+        <div className="w-full max-w-[1600px] mx-auto">
           <motion.div
             key={currentPage}
             initial={{ opacity: 0, x: 20 }}
