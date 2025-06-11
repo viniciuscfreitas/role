@@ -4,6 +4,7 @@ import { Sidebar } from '@/components/sidebar'
 import { Stories } from '@/components/stories'
 import { StoryViewer } from '@/components/story-viewer'
 import { LoginPage } from '@/components/login-page'
+import { LoadingSpinner } from '@/components/ui/loading-spinner'
 import { useAuth } from '@/lib/contexts/auth-context'
 import { useNavigation } from '@/lib/contexts/navigation-context'
 import { motion } from 'framer-motion'
@@ -114,9 +115,7 @@ export default function MainPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-foreground mb-4">Carregando...</h2>
-        </div>
+        <LoadingSpinner size="xl" />
       </div>
     )
   }

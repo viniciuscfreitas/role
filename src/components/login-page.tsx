@@ -19,6 +19,7 @@ import {
   Camera,
   Heart
 } from 'lucide-react'
+import { LoadingSpinner } from '@/components/ui/loading-spinner'
 
 export function LoginPage() {
   const [isLogin, setIsLogin] = useState(true)
@@ -311,10 +312,7 @@ export function LoginPage() {
                   disabled={isLoading}
                 >
                   {isLoading ? (
-                    <div className="flex items-center gap-3">
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                      {isLogin ? 'Entrando...' : 'Criando conta...'}
-                    </div>
+                    <LoadingSpinner size="sm" className="gap-0" />
                   ) : (
                     <div className="flex items-center gap-2">
                       <Zap className="h-5 w-5" />

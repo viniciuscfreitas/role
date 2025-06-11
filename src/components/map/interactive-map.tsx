@@ -6,6 +6,7 @@ import { createEventMarker, fitMapToEvents, getUserLocation } from '@/lib/maps/m
 import { InteractiveMapProps, MapControls } from '@/types/maps'
 import { Loader2, MapPin, Navigation } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { LoadingSpinner } from '@/components/ui/loading-spinner'
 import { MapFallback } from './map-fallback'
 
 export function InteractiveMap({ 
@@ -226,10 +227,7 @@ export function InteractiveMap({
     <div className={`${className} relative`}>
       {isLoading && (
         <div className="absolute inset-0 bg-muted flex items-center justify-center z-10">
-          <div className="text-center">
-            <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto mb-4" />
-            <p className="text-muted-foreground">Carregando mapa...</p>
-          </div>
+          <LoadingSpinner size="lg" />
         </div>
       )}
       
