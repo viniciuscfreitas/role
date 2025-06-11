@@ -96,10 +96,9 @@ export function Stories() {
       <div className="flex justify-center">
         <div className={cn(
           "w-full transition-all duration-300",
-          "px-6 py-4",
-          isLeftSidebarCollapsed && isRightSidebarCollapsed ? "max-w-4xl" : 
-          (isLeftSidebarCollapsed || isRightSidebarCollapsed) ? "max-w-3xl" : 
-          "max-w-2xl"
+          isLeftSidebarCollapsed && isRightSidebarCollapsed ? "px-8 py-4 max-w-5xl" : 
+          (isLeftSidebarCollapsed || isRightSidebarCollapsed) ? "px-6 py-4 max-w-4xl" : 
+          "px-4 py-4 max-w-3xl"
         )}>
           <div className="flex items-center gap-4 overflow-x-auto pb-2 scrollbar-none">
             {/* Seu Story */}

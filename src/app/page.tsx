@@ -35,10 +35,9 @@ function HomePage() {
         <div className="flex justify-center">
           <div className={cn(
             "w-full transition-all duration-300",
-            "px-6 py-4",
-            isLeftSidebarCollapsed && isRightSidebarCollapsed ? "max-w-4xl" : 
-            (isLeftSidebarCollapsed || isRightSidebarCollapsed) ? "max-w-3xl" : 
-            "max-w-2xl"
+            isLeftSidebarCollapsed && isRightSidebarCollapsed ? "px-8 py-4 max-w-5xl" : 
+            (isLeftSidebarCollapsed || isRightSidebarCollapsed) ? "px-6 py-4 max-w-4xl" : 
+            "px-4 py-4 max-w-3xl"
           )}>
             <EventFeed />
           </div>
@@ -88,7 +87,7 @@ function AuthenticatedFeed() {
         isLeftSidebarCollapsed ? "ml-[72px]" : "ml-64",
         currentPage === 'home' && (isRightSidebarCollapsed ? "mr-[72px]" : "mr-80")
       )}>
-        <div className="w-full max-w-[1200px] mx-auto">
+        <div className="w-full max-w-[1400px] mx-auto">
           <motion.div
             key={currentPage}
             initial={{ opacity: 0, x: 20 }}
