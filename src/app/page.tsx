@@ -1,103 +1,128 @@
-import Image from "next/image";
+'use client'
 
-export default function Home() {
+import { Sidebar } from '@/components/sidebar'
+import { Stories } from '@/components/stories'
+import { StoryViewer } from '@/components/story-viewer'
+import { useAuth } from '@/lib/contexts/auth-context'
+import { useNavigation } from '@/lib/contexts/navigation-context'
+import { motion } from 'framer-motion'
+import { EventFeed } from '@/components/event-feed'
+import { SearchPage } from '@/components/search-page'
+import { NotificationsPage } from '@/components/notifications-page'
+import { LikesPage } from '@/components/likes-page'
+import { SavedPage } from '@/components/saved-page'
+import { ProfilePage } from '@/components/profile-page'
+import { CreateEventPage } from '@/components/create-event-page'
+import { MapPage } from '@/components/map-page'
+import { cn } from '@/lib/utils'
+import { RightSidebar } from '@/components/right-sidebar'
+import { useSidebar } from '@/lib/contexts/sidebar-context'
+
+function HomePage() {
+  const { isLeftSidebarCollapsed, isRightSidebarCollapsed } = useSidebar()
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="h-screen flex flex-col bg-background">
+      {/* Stories fixos no topo */}
+      <div className="flex-shrink-0">
+        <Stories />
+      </div>
+      
+      {/* Feed que rola */}
+      <div className="flex-1 overflow-y-auto">
+        <div className="flex justify-center">
+          <div className={cn(
+            "w-full transition-all duration-300",
+            "px-6 py-4",
+            isLeftSidebarCollapsed && isRightSidebarCollapsed ? "max-w-4xl" : 
+            (isLeftSidebarCollapsed || isRightSidebarCollapsed) ? "max-w-3xl" : 
+            "max-w-2xl"
+          )}>
+            <EventFeed />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+function AuthenticatedFeed() {
+  const { currentPage } = useNavigation()
+  const { isLeftSidebarCollapsed, isRightSidebarCollapsed } = useSidebar()
+
+  const renderPage = () => {
+    switch (currentPage) {
+      case 'home':
+        return <HomePage />
+      case 'search':
+        return <SearchPage />
+      case 'events':
+        return <SearchPage />
+      case 'map':
+        return <MapPage />
+      case 'create-event':
+        return <CreateEventPage />
+      case 'notifications':
+        return <NotificationsPage />
+      case 'likes':
+        return <LikesPage />
+      case 'saved':
+        return <SavedPage />
+      case 'profile':
+        return <ProfilePage />
+      default:
+        return <HomePage />
+    }
+  }
+
+  return (
+    <div className="flex min-h-screen bg-background">
+      {/* Sidebar esquerda fixa */}
+      <Sidebar />
+      
+      {/* Container principal */}
+      <main className={cn(
+        "flex-1 transition-all duration-300 flex flex-col",
+        isLeftSidebarCollapsed ? "ml-[72px]" : "ml-64",
+        currentPage === 'home' && (isRightSidebarCollapsed ? "mr-[72px]" : "mr-80")
+      )}>
+        <div className="w-full max-w-[1200px] mx-auto">
+          <motion.div
+            key={currentPage}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3 }}
+            className="w-full"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            {renderPage()}
+          </motion.div>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      
+      {/* Sidebar direita fixa - apenas na home */}
+      {currentPage === 'home' && <RightSidebar />}
     </div>
-  );
+  )
+}
+
+export default function MainPage() {
+  const { user } = useAuth()
+
+  if (!user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-foreground mb-4">Carregando...</h2>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <>
+      <AuthenticatedFeed />
+      <StoryViewer />
+    </>
+  )
 }
