@@ -50,14 +50,22 @@ export function PastEventCard({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={cn('bg-white dark:bg-black border-b border-gray-200 dark:bg-gray-800', className)}
+      whileHover={{ y: -2, scale: 1.01 }}
+      transition={{ duration: 0.2 }}
+      className={cn(
+        'bg-white dark:bg-gray-900 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden',
+        'border border-gray-100 dark:border-gray-800',
+        // Subtle past event styling
+        'bg-gradient-to-b from-gray-50/50 to-white dark:from-gray-800/50 dark:to-gray-900',
+        className
+      )}
     >
-      {/* Instagram Header */}
-      <div className="flex items-center justify-between p-3">
+      {/* ROLE Header */}
+      <div className="flex items-center justify-between p-4">
         <div className="flex items-center gap-3">
-          <Avatar className="w-8 h-8">
+          <Avatar className="w-9 h-9 ring-2 ring-gray-200 dark:ring-gray-700">
             <AvatarImage src={event.organizer.image} alt={event.organizer.name} />
-            <AvatarFallback className="bg-gray-200 text-gray-700 text-sm">
+            <AvatarFallback className="bg-gradient-to-br from-violet-500 to-purple-500 text-white text-sm font-semibold">
               {event.organizer.name.charAt(0)}
             </AvatarFallback>
           </Avatar>
@@ -66,22 +74,22 @@ export function PastEventCard({
               {event.organizer.name}
             </span>
             {event.organizer.verified && (
-              <div className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
+              <div className="w-4 h-4 bg-violet-500 rounded-full flex items-center justify-center">
                 <span className="text-white text-xs">✓</span>
               </div>
             )}
-            <span className="text-gray-500 text-sm">•</span>
+            <span className="text-gray-400 text-sm">•</span>
             <span className="text-gray-500 text-sm">
               {formatDistanceToNow(event.endDate, { addSuffix: false, locale: ptBR })}
             </span>
           </div>
         </div>
-        <Button variant="ghost" size="sm" className="p-1">
-          <MoreHorizontal className="w-5 h-5 text-gray-600" />
+        <Button variant="ghost" size="sm" className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full">
+          <MoreHorizontal className="w-5 h-5 text-gray-600 dark:text-gray-400" />
         </Button>
       </div>
 
-      {/* Instagram Image */}
+      {/* Enhanced Image */}
       <div className="relative aspect-square" onDoubleClick={handleDoubleClick}>
         <img
           src={event.image}
@@ -89,17 +97,17 @@ export function PastEventCard({
           className="w-full h-full object-cover"
         />
         
-        {/* Status Badge - Instagram Style */}
+        {/* Status Badge - ROLE Style */}
         <div className="absolute top-3 left-3">
-          <Badge className="bg-gray-800/80 text-white border-none text-xs px-2 py-1">
-            FINALIZADO
+          <Badge className="bg-gray-800/90 text-white border-none text-xs px-3 py-1 rounded-full backdrop-blur-sm">
+            ✨ FINALIZADO
           </Badge>
         </div>
 
         {/* FOMO Badge */}
         {event.fomo && (
           <div className="absolute top-3 right-3">
-            <Badge className="bg-orange-500 text-white border-none text-xs px-2 py-1 flex items-center gap-1">
+            <Badge className="bg-gradient-to-r from-orange-500 to-red-500 text-white border-none text-xs px-3 py-1 rounded-full flex items-center gap-1 shadow-lg">
               <TrendingUp className="w-3 h-3" />
               FOMO
             </Badge>
@@ -107,7 +115,7 @@ export function PastEventCard({
         )}
 
         {/* Rating Overlay */}
-        <div className="absolute bottom-3 left-3 bg-black/70 rounded-lg px-2 py-1">
+        <div className="absolute bottom-3 left-3 bg-black/80 rounded-lg px-3 py-1.5 backdrop-blur-sm">
           <div className="flex items-center gap-1">
             {renderStars(event.rating)}
             <span className="text-white text-xs font-semibold ml-1">
@@ -124,69 +132,78 @@ export function PastEventCard({
             transition={{ duration: 1 }}
             className="absolute inset-0 flex items-center justify-center pointer-events-none"
           >
-            <Heart className="w-20 h-20 text-red-500 fill-red-500" />
+            <Heart className="w-20 h-20 text-red-500 fill-red-500 drop-shadow-lg" />
           </motion.div>
         )}
       </div>
 
-      {/* Instagram Actions */}
-      <div className="flex items-center justify-between p-3">
-        <div className="flex items-center gap-4">
+      {/* Enhanced Actions */}
+      <div className="flex items-center justify-between p-4">
+        <div className="flex items-center gap-5">
           <Button
             variant="ghost"
             size="sm"
-            className="p-0 hover:bg-transparent"
+            className="p-0 hover:bg-transparent group"
             onClick={() => setIsLiked(!isLiked)}
           >
             <Heart 
               className={cn(
-                'w-6 h-6 transition-colors',
-                isLiked ? 'text-red-500 fill-red-500' : 'text-gray-900 dark:text-white'
+                'w-6 h-6 transition-all duration-200',
+                isLiked 
+                  ? 'text-red-500 fill-red-500 scale-110' 
+                  : 'text-gray-700 dark:text-gray-300 group-hover:text-red-500'
               )} 
             />
           </Button>
           <Button
             variant="ghost"
             size="sm"
-            className="p-0 hover:bg-transparent"
+            className="p-0 hover:bg-transparent group"
             onClick={() => onViewDetails?.(event)}
           >
-            <MessageCircle className="w-6 h-6 text-gray-900 dark:text-white" />
+            <MessageCircle className="w-6 h-6 text-gray-700 dark:text-gray-300 group-hover:text-violet-500 transition-colors" />
           </Button>
           <Button
             variant="ghost"
             size="sm"
-            className="p-0 hover:bg-transparent"
+            className="p-0 hover:bg-transparent group"
           >
-            <Send className="w-6 h-6 text-gray-900 dark:text-white" />
+            <Send className="w-6 h-6 text-gray-700 dark:text-gray-300 group-hover:text-violet-500 transition-colors" />
           </Button>
         </div>
         <Button
           variant="ghost"
           size="sm"
-          className="p-0 hover:bg-transparent"
+          className="p-0 hover:bg-transparent group"
           onClick={() => setIsSaved(!isSaved)}
         >
           <Bookmark 
             className={cn(
-              'w-6 h-6 transition-colors',
-              isSaved ? 'text-gray-900 dark:text-white fill-gray-900 dark:fill-white' : 'text-gray-900 dark:text-white'
+              'w-6 h-6 transition-all duration-200',
+              isSaved 
+                ? 'text-violet-500 fill-violet-500' 
+                : 'text-gray-700 dark:text-gray-300 group-hover:text-violet-500'
             )} 
           />
         </Button>
       </div>
 
-      {/* Instagram Engagement */}
-      <div className="px-3 pb-1">
+      {/* Enhanced Engagement */}
+      <div className="px-4 pb-2">
         <div className="flex items-center gap-2 text-sm">
           <span className="font-semibold text-gray-900 dark:text-white">
             {event.attendeeCount.toLocaleString()} pessoas participaram
           </span>
+          {event.fomo && (
+            <Badge className="bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400 text-xs px-2 py-0.5 rounded-full">
+              Alta demanda
+            </Badge>
+          )}
         </div>
       </div>
 
-      {/* Instagram Caption */}
-      <div className="px-3 pb-2">
+      {/* Enhanced Caption */}
+      <div className="px-4 pb-3">
         <div className="text-sm">
           <span className="font-semibold text-gray-900 dark:text-white mr-2">
             {event.organizer.name}
@@ -195,12 +212,12 @@ export function PastEventCard({
             {event.title}
           </span>
         </div>
-        <p className="text-sm text-gray-900 dark:text-white mt-1 line-clamp-2">
+        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 line-clamp-2 leading-relaxed">
           {event.description}
         </p>
         
         {/* Location */}
-        <div className="flex items-center gap-1 mt-2 text-sm text-gray-500">
+        <div className="flex items-center gap-1 mt-3 text-sm text-gray-500 dark:text-gray-400">
           <MapPin className="w-4 h-4" />
           <span>{event.location}</span>
         </div>
@@ -208,10 +225,10 @@ export function PastEventCard({
 
       {/* Reviews as "Comments" */}
       {event.reviews.length > 0 && (
-        <div className="px-3 pb-2">
+        <div className="px-4 pb-3">
           <Button
             variant="ghost"
-            className="p-0 h-auto text-sm text-gray-500 hover:bg-transparent"
+            className="p-0 h-auto text-sm text-gray-500 hover:bg-transparent hover:text-violet-500 transition-colors"
             onClick={() => onViewDetails?.(event)}
           >
             Ver todas as {event.reviews.length} avaliações
@@ -219,11 +236,11 @@ export function PastEventCard({
           
           {/* Latest review as comment */}
           {event.reviews[0] && (
-            <div className="mt-1 text-sm">
+            <div className="mt-2 text-sm">
               <span className="font-semibold text-gray-900 dark:text-white mr-2">
                 {event.reviews[0].user.name}
               </span>
-              <span className="text-gray-900 dark:text-white">
+              <span className="text-gray-700 dark:text-gray-300">
                 {event.reviews[0].comment}
               </span>
               <div className="flex items-center gap-1 mt-1">
@@ -236,10 +253,10 @@ export function PastEventCard({
 
       {/* FOMO Action */}
       {event.fomo && (
-        <div className="px-3 pb-3">
+        <div className="px-4 pb-4">
           <Button
             variant="ghost"
-            className="p-0 h-auto text-sm text-orange-600 hover:bg-transparent font-semibold"
+            className="p-0 h-auto text-sm text-orange-600 hover:bg-transparent font-semibold hover:text-orange-700 transition-colors"
             onClick={() => onFindSimilar?.(event)}
           >
             🔥 Encontrar eventos similares

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Heart, MessageCircle, Send, Bookmark, MoreHorizontal, Users, MapPin, Calendar, Clock, UserPlus } from 'lucide-react'
+import { Heart, MessageCircle, Send, Bookmark, MoreHorizontal, MapPin, Clock, Users, Calendar, Star } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -20,32 +20,26 @@ interface FutureEventCardProps {
 export function FutureEventCard({ 
   event, 
   onMarkInterested, 
-  onMarkGoing,
+  onMarkGoing, 
   onInviteFriends,
   className 
 }: FutureEventCardProps) {
-  const [isLiked, setIsLiked] = useState(false)
-  const [isSaved, setIsSaved] = useState(false)
+  const [isInterested, setIsInterested] = useState(false)
+  const [isGoing, setIsGoing] = useState(false)
   const [showHeart, setShowHeart] = useState(false)
   const [timeLeft, setTimeLeft] = useState('')
 
-  const handleDoubleClick = () => {
-    setIsLiked(true)
-    setShowHeart(true)
-    setTimeout(() => setShowHeart(false), 1000)
-  }
-
-  // Countdown timer
+  // Real-time countdown
   useEffect(() => {
     const updateCountdown = () => {
-      const now = new Date()
-      const eventDate = new Date(event.startDate)
-      const diff = eventDate.getTime() - now.getTime()
+      const now = new Date().getTime()
+      const eventTime = event.startDate.getTime()
+      const difference = eventTime - now
 
-      if (diff > 0) {
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24))
-        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
+      if (difference > 0) {
+        const days = Math.floor(difference / (1000 * 60 * 60 * 24))
+        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60))
 
         if (days > 0) {
           setTimeLeft(`${days}d ${hours}h`)
@@ -65,32 +59,41 @@ export function FutureEventCard({
     return () => clearInterval(interval)
   }, [event.startDate])
 
-  const getAnticipationColor = (level: number) => {
-    if (level >= 80) return 'bg-purple-500'
-    if (level >= 60) return 'bg-blue-500'
-    if (level >= 40) return 'bg-green-500'
-    return 'bg-gray-500'
+  const handleDoubleClick = () => {
+    setIsInterested(true)
+    setShowHeart(true)
+    setTimeout(() => setShowHeart(false), 1000)
   }
 
-  const getAnticipationText = (level: number) => {
-    if (level >= 80) return 'MUITO AGUARDADO'
-    if (level >= 60) return 'AGUARDADO'
-    if (level >= 40) return 'INTERESSE CRESCENTE'
-    return 'NOVO EVENTO'
+  const getAnticipationBadge = (level: number) => {
+    if (level >= 80) return { text: 'MUITO AGUARDADO', color: 'bg-gradient-to-r from-purple-500 to-pink-500' }
+    if (level >= 60) return { text: 'AGUARDADO', color: 'bg-gradient-to-r from-blue-500 to-purple-500' }
+    if (level >= 40) return { text: 'INTERESSANTE', color: 'bg-gradient-to-r from-green-500 to-blue-500' }
+    return { text: 'NOVO', color: 'bg-gradient-to-r from-gray-500 to-gray-600' }
   }
+
+  const anticipationBadge = getAnticipationBadge(event.anticipationLevel)
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={cn('bg-white dark:bg-black border-b border-gray-200 dark:border-gray-800', className)}
+      whileHover={{ y: -2, scale: 1.01 }}
+      transition={{ duration: 0.2 }}
+      className={cn(
+        'bg-white dark:bg-gray-900 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden',
+        'border border-gray-100 dark:border-gray-800',
+        // Future event gradient
+        'bg-gradient-to-br from-violet-50/30 to-purple-50/30 dark:from-violet-950/20 dark:to-purple-950/20',
+        className
+      )}
     >
-      {/* Instagram Header */}
-      <div className="flex items-center justify-between p-3">
+      {/* ROLE Header */}
+      <div className="flex items-center justify-between p-4">
         <div className="flex items-center gap-3">
-          <Avatar className="w-8 h-8">
+          <Avatar className="w-9 h-9 ring-2 ring-violet-200 dark:ring-violet-700">
             <AvatarImage src={event.organizer.image} alt={event.organizer.name} />
-            <AvatarFallback className="bg-gray-200 text-gray-700 text-sm">
+            <AvatarFallback className="bg-gradient-to-br from-violet-500 to-purple-500 text-white text-sm font-semibold">
               {event.organizer.name.charAt(0)}
             </AvatarFallback>
           </Avatar>
@@ -99,22 +102,22 @@ export function FutureEventCard({
               {event.organizer.name}
             </span>
             {event.organizer.verified && (
-              <div className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
+              <div className="w-4 h-4 bg-violet-500 rounded-full flex items-center justify-center">
                 <span className="text-white text-xs">✓</span>
               </div>
             )}
-            <span className="text-gray-500 text-sm">•</span>
+            <span className="text-gray-400 text-sm">•</span>
             <span className="text-gray-500 text-sm">
               {formatDistanceToNow(event.startDate, { addSuffix: true, locale: ptBR })}
             </span>
           </div>
         </div>
-        <Button variant="ghost" size="sm" className="p-1">
-          <MoreHorizontal className="w-5 h-5 text-gray-600" />
+        <Button variant="ghost" size="sm" className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full">
+          <MoreHorizontal className="w-5 h-5 text-gray-600 dark:text-gray-400" />
         </Button>
       </div>
 
-      {/* Instagram Image */}
+      {/* Enhanced Future Image */}
       <div className="relative aspect-square" onDoubleClick={handleDoubleClick}>
         <img
           src={event.image}
@@ -122,9 +125,9 @@ export function FutureEventCard({
           className="w-full h-full object-cover"
         />
         
-        {/* Future Badge */}
+        {/* Future Badge - ROLE Style */}
         <div className="absolute top-3 left-3">
-          <Badge className="bg-blue-500 text-white border-none text-xs px-2 py-1">
+          <Badge className="bg-violet-500 text-white border-none text-xs px-3 py-1 rounded-full shadow-lg">
             📅 PRÓXIMO
           </Badge>
         </div>
@@ -132,30 +135,34 @@ export function FutureEventCard({
         {/* Anticipation Badge */}
         <div className="absolute top-3 right-3">
           <Badge className={cn(
-            'text-white border-none text-xs px-2 py-1',
-            getAnticipationColor(event.anticipationLevel)
+            'text-white border-none text-xs px-3 py-1 rounded-full shadow-lg',
+            anticipationBadge.color
           )}>
-            {getAnticipationText(event.anticipationLevel)}
+            <Star className="w-3 h-3 mr-1" />
+            {anticipationBadge.text}
           </Badge>
         </div>
 
         {/* Countdown Overlay */}
-        <div className="absolute bottom-3 left-3 bg-black/70 rounded-lg px-2 py-1">
-          <div className="flex items-center gap-1 text-white">
-            <Clock className="w-3 h-3" />
-            <span className="text-xs font-semibold">
-              {timeLeft}
-            </span>
+        <div className="absolute bottom-3 left-3 right-3 flex justify-between">
+          {/* Countdown Timer */}
+          <div className="bg-black/80 rounded-lg px-3 py-1.5 backdrop-blur-sm">
+            <div className="flex items-center gap-1 text-white text-xs">
+              <Clock className="w-3 h-3" />
+              <span className="font-semibold">
+                {timeLeft}
+              </span>
+            </div>
           </div>
-        </div>
 
-        {/* Expected Attendees */}
-        <div className="absolute bottom-3 right-3 bg-black/70 rounded-lg px-2 py-1">
-          <div className="flex items-center gap-1 text-white">
-            <Users className="w-3 h-3" />
-            <span className="text-xs font-semibold">
-              {event.expectedAttendees}+ interessados
-            </span>
+          {/* Interest Level */}
+          <div className="bg-black/80 rounded-lg px-3 py-1.5 backdrop-blur-sm">
+            <div className="flex items-center gap-1 text-white text-xs">
+              <Users className="w-3 h-3" />
+              <span className="font-semibold">
+                {event.interestedCount} interessados
+              </span>
+            </div>
           </div>
         </div>
 
@@ -167,80 +174,84 @@ export function FutureEventCard({
             transition={{ duration: 1 }}
             className="absolute inset-0 flex items-center justify-center pointer-events-none"
           >
-            <Heart className="w-20 h-20 text-red-500 fill-red-500" />
+            <Heart className="w-20 h-20 text-violet-500 fill-violet-500 drop-shadow-lg" />
           </motion.div>
         )}
       </div>
 
-      {/* Instagram Actions */}
-      <div className="flex items-center justify-between p-3">
-        <div className="flex items-center gap-4">
+      {/* Enhanced Actions */}
+      <div className="flex items-center justify-between p-4">
+        <div className="flex items-center gap-5">
           <Button
             variant="ghost"
             size="sm"
-            className="p-0 hover:bg-transparent"
+            className="p-0 hover:bg-transparent group"
             onClick={() => {
-              setIsLiked(!isLiked)
+              setIsInterested(!isInterested)
               onMarkInterested?.(event)
             }}
           >
             <Heart 
               className={cn(
-                'w-6 h-6 transition-colors',
-                isLiked ? 'text-red-500 fill-red-500' : 'text-gray-900 dark:text-white'
+                'w-6 h-6 transition-all duration-200',
+                isInterested 
+                  ? 'text-violet-500 fill-violet-500 scale-110' 
+                  : 'text-gray-700 dark:text-gray-300 group-hover:text-violet-500'
               )} 
             />
           </Button>
           <Button
             variant="ghost"
             size="sm"
-            className="p-0 hover:bg-transparent"
+            className="p-0 hover:bg-transparent group"
           >
-            <MessageCircle className="w-6 h-6 text-gray-900 dark:text-white" />
+            <MessageCircle className="w-6 h-6 text-gray-700 dark:text-gray-300 group-hover:text-violet-500 transition-colors" />
           </Button>
           <Button
             variant="ghost"
             size="sm"
-            className="p-0 hover:bg-transparent"
+            className="p-0 hover:bg-transparent group"
             onClick={() => onInviteFriends?.(event)}
           >
-            <Send className="w-6 h-6 text-gray-900 dark:text-white" />
+            <Send className="w-6 h-6 text-gray-700 dark:text-gray-300 group-hover:text-violet-500 transition-colors" />
           </Button>
         </div>
         <Button
           variant="ghost"
           size="sm"
-          className="p-0 hover:bg-transparent"
+          className="p-0 hover:bg-transparent group"
           onClick={() => {
-            setIsSaved(!isSaved)
+            setIsGoing(!isGoing)
             onMarkGoing?.(event)
           }}
         >
           <Bookmark 
             className={cn(
-              'w-6 h-6 transition-colors',
-              isSaved ? 'text-gray-900 dark:text-white fill-gray-900 dark:fill-white' : 'text-gray-900 dark:text-white'
+              'w-6 h-6 transition-all duration-200',
+              isGoing 
+                ? 'text-violet-500 fill-violet-500' 
+                : 'text-gray-700 dark:text-gray-300 group-hover:text-violet-500'
             )} 
           />
         </Button>
       </div>
 
-      {/* Instagram Engagement */}
-      <div className="px-3 pb-1">
+      {/* Enhanced Engagement */}
+      <div className="px-4 pb-2">
         <div className="flex items-center gap-2 text-sm">
           <span className="font-semibold text-gray-900 dark:text-white">
-            {event.expectedAttendees.toLocaleString()} pessoas interessadas
+            {event.interestedCount.toLocaleString()} pessoas interessadas
           </span>
           {event.anticipationLevel >= 80 && (
-            <Badge className="bg-purple-100 text-purple-700 text-xs px-1 py-0">
-              TRENDING
+            <Badge className="bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400 text-xs px-2 py-0.5 rounded-full">
+              Trending
             </Badge>
           )}
         </div>
       </div>
 
-      {/* Instagram Caption */}
-      <div className="px-3 pb-2">
+      {/* Enhanced Caption */}
+      <div className="px-4 pb-3">
         <div className="text-sm">
           <span className="font-semibold text-gray-900 dark:text-white mr-2">
             {event.organizer.name}
@@ -249,99 +260,104 @@ export function FutureEventCard({
             {event.title}
           </span>
         </div>
-        <p className="text-sm text-gray-900 dark:text-white mt-1 line-clamp-2">
+        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 line-clamp-2 leading-relaxed">
           {event.description}
         </p>
         
-        {/* Event Details */}
-        <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
-          <div className="flex items-center gap-1">
-            <Calendar className="w-4 h-4" />
-            <span>{new Date(event.startDate).toLocaleDateString('pt-BR')}</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <MapPin className="w-4 h-4" />
-            <span>{event.location}</span>
-          </div>
+        {/* Location */}
+        <div className="flex items-center gap-1 mt-3 text-sm text-gray-500 dark:text-gray-400">
+          <MapPin className="w-4 h-4" />
+          <span>{event.location}</span>
         </div>
       </div>
 
       {/* Friends Going Preview */}
-      {event.friendsGoing && event.friendsGoing.length > 0 && (
-        <div className="px-3 pb-2">
+      {event.friendsGoing.length > 0 && (
+        <div className="px-4 pb-3">
           <div className="flex items-center gap-2">
             <div className="flex -space-x-2">
               {event.friendsGoing.slice(0, 3).map((friend) => (
-                <Avatar key={friend.id} className="w-6 h-6 border-2 border-white">
+                <Avatar key={friend.id} className="w-6 h-6 border-2 border-white dark:border-gray-900">
                   <AvatarImage src={friend.image} alt={friend.name} />
-                  <AvatarFallback className="text-xs bg-gray-200">
+                  <AvatarFallback className="bg-violet-500 text-white text-xs">
                     {friend.name.charAt(0)}
                   </AvatarFallback>
                 </Avatar>
               ))}
             </div>
-            <span className="text-sm text-gray-900 dark:text-white">
-              <span className="font-semibold">{event.friendsGoing[0].name}</span>
-              {event.friendsGoing.length > 1 && (
-                <span> e mais {event.friendsGoing.length - 1} amigos vão participar</span>
-              )}
-              {event.friendsGoing.length === 1 && (
-                <span> vai participar</span>
-              )}
+            <span className="text-sm text-gray-600 dark:text-gray-400">
+              {event.friendsGoing.length === 1 
+                ? `${event.friendsGoing[0].name} está interessado`
+                : `${event.friendsGoing[0].name} e mais ${event.friendsGoing.length - 1} amigos estão interessados`
+              }
             </span>
           </div>
         </div>
       )}
 
       {/* Planning Groups */}
-      {event.planningGroups && event.planningGroups.length > 0 && (
-        <div className="px-3 pb-2">
-          <div className="text-sm">
-            <span className="font-semibold text-gray-900 dark:text-white mr-2">
-              Grupos de planejamento:
-            </span>
-            {event.planningGroups.slice(0, 2).map((group, index) => (
-              <span key={group.id} className="text-blue-600 dark:text-blue-400">
-                {group.name}
-                {index < Math.min(event.planningGroups!.length, 2) - 1 && ', '}
-              </span>
-            ))}
-            {event.planningGroups.length > 2 && (
-              <span className="text-gray-500"> +{event.planningGroups.length - 2} mais</span>
-            )}
+      {event.planningGroups.length > 0 && (
+        <div className="px-4 pb-3">
+          <div className="text-sm text-gray-500 mb-2">
+            Grupos de planejamento
           </div>
+          
+          {event.planningGroups.slice(0, 2).map((group) => (
+            <div key={group.id} className="text-sm bg-violet-50 dark:bg-violet-950/20 rounded-lg p-3 mb-2">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="font-semibold text-violet-700 dark:text-violet-300">
+                  {group.name}
+                </span>
+                <Badge className="bg-violet-200 text-violet-700 dark:bg-violet-800 dark:text-violet-300 text-xs px-2 py-0.5 rounded-full">
+                  {group.members.length} membros
+                </Badge>
+              </div>
+              <span className="text-gray-600 dark:text-gray-400 text-xs">
+                {group.description}
+              </span>
+            </div>
+          ))}
         </div>
       )}
 
       {/* Action Buttons */}
-      <div className="px-3 pb-3 space-y-2">
-        {/* Primary Actions */}
+      <div className="px-4 pb-4 space-y-2">
         <div className="flex gap-2">
           <Button
-            onClick={() => onMarkInterested?.(event)}
-            variant="outline"
-            className="flex-1 text-sm"
+            variant={isInterested ? "default" : "outline"}
+            size="sm"
+            className={cn(
+              'flex-1 text-sm py-2 rounded-lg transition-all duration-200',
+              isInterested 
+                ? 'bg-violet-500 hover:bg-violet-600 text-white' 
+                : 'border-violet-300 dark:border-violet-600 text-violet-600 dark:text-violet-400 hover:bg-violet-50 dark:hover:bg-violet-950/20'
+            )}
+            onClick={() => {
+              setIsInterested(!isInterested)
+              onMarkInterested?.(event)
+            }}
           >
-            <Heart className="w-4 h-4 mr-1" />
-            Interessado
+            <Heart className={cn('w-4 h-4 mr-1', isInterested && 'fill-current')} />
+            {isInterested ? 'Interessado' : 'Interessado?'}
           </Button>
           <Button
-            onClick={() => onMarkGoing?.(event)}
-            className="flex-1 bg-blue-500 hover:bg-blue-600 text-white text-sm"
+            variant={isGoing ? "default" : "outline"}
+            size="sm"
+            className={cn(
+              'flex-1 text-sm py-2 rounded-lg transition-all duration-200',
+              isGoing 
+                ? 'bg-green-500 hover:bg-green-600 text-white' 
+                : 'border-green-300 dark:border-green-600 text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-950/20'
+            )}
+            onClick={() => {
+              setIsGoing(!isGoing)
+              onMarkGoing?.(event)
+            }}
           >
-            <UserPlus className="w-4 h-4 mr-1" />
-            Vou participar
+            <Calendar className={cn('w-4 h-4 mr-1', isGoing && 'fill-current')} />
+            {isGoing ? 'Vou participar' : 'Vou participar?'}
           </Button>
         </div>
-
-        {/* Secondary Action */}
-        <Button
-          variant="ghost"
-          onClick={() => onInviteFriends?.(event)}
-          className="w-full text-sm text-blue-600 hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-blue-950/20"
-        >
-          Convidar amigos
-        </Button>
       </div>
     </motion.div>
   )

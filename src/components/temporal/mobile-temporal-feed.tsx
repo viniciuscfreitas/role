@@ -79,7 +79,7 @@ export function MobileTemporalFeed({
             {...baseProps}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: index * 0.03 }}
+            transition={{ duration: 0.4, delay: index * 0.05 }}
           >
             <PastEventCard
               event={event as PastEvent}
@@ -95,7 +95,7 @@ export function MobileTemporalFeed({
             {...baseProps}
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.3, delay: index * 0.03 }}
+            transition={{ duration: 0.4, delay: index * 0.05 }}
           >
             <LiveEventCard
               event={event as LiveEvent}
@@ -112,7 +112,7 @@ export function MobileTemporalFeed({
             {...baseProps}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: index * 0.03 }}
+            transition={{ duration: 0.4, delay: index * 0.05 }}
           >
             <FutureEventCard
               event={event as FutureEvent}
@@ -134,7 +134,7 @@ export function MobileTemporalFeed({
   return (
     <div 
       ref={scrollRef}
-      className={cn('w-full bg-white dark:bg-black min-h-screen', className)}
+      className={cn('w-full bg-gray-50 dark:bg-gray-950 min-h-screen', className)}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
@@ -153,7 +153,7 @@ export function MobileTemporalFeed({
       )}
 
       {/* Instagram-style Mobile Feed */}
-      <div className="space-y-0">
+      <div className="space-y-4 px-4 py-4">
         {filteredEvents.map((event, index) => renderEventCard(event, index))}
       </div>
 
@@ -165,7 +165,7 @@ export function MobileTemporalFeed({
             Nenhum evento encontrado
           </h3>
           <p className="text-gray-500 text-base mb-6 max-w-sm">
-            Puxe para baixo para atualizar ou tente novamente mais tarde
+            Puxe para baixo para atualizar ou tente ajustar seus filtros
           </p>
           <button
             onClick={handleRefresh}

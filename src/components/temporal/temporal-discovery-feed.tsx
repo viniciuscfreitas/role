@@ -94,20 +94,20 @@ export function TemporalDiscoveryFeed({
   }
 
   return (
-    <div className={cn('w-full max-w-md mx-auto bg-white dark:bg-black', className)}>
-      {/* Instagram-style Feed */}
-      <div className="space-y-0">
+    <div className={cn('w-full max-w-md mx-auto bg-gray-50 dark:bg-gray-950 min-h-screen', className)}>
+      {/* ROLE Feed with Spacing */}
+      <div className="space-y-4 px-4 py-4">
         {filteredEvents.map((event, index) => renderEventCard(event, index))}
       </div>
 
       {/* Empty State */}
       {filteredEvents.length === 0 && (
-        <div className="flex flex-col items-center justify-center py-12 text-center">
-          <div className="text-6xl mb-4">🎉</div>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+        <div className="flex flex-col items-center justify-center py-16 px-6 text-center">
+          <div className="text-8xl mb-6">🎉</div>
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
             Nenhum evento encontrado
           </h3>
-          <p className="text-gray-500 text-sm">
+          <p className="text-gray-500 text-base mb-6 max-w-sm">
             Tente ajustar seus filtros ou volte mais tarde
           </p>
         </div>
