@@ -2,14 +2,14 @@
 
 import { Stories } from '@/components/stories'
 import { MobileStories } from '@/components/adaptive/mobile-stories'
-import { MobileFeed } from '@/components/adaptive/mobile-feed'
+import { MobileTemporalFeed } from '@/components/temporal/mobile-temporal-feed'
 import { StoryViewer } from '@/components/story-viewer'
 import { LoginPage } from '@/components/login-page'
 import { LoadingSpinner } from '@/components/ui/loading-spinner'
 import { useAuth } from '@/lib/contexts/auth-context'
 import { useNavigation } from '@/lib/contexts/navigation-context'
 import { motion } from 'framer-motion'
-import { EventFeed } from '@/components/event-feed'
+import { TemporalDiscoveryFeed } from '@/components/temporal/temporal-discovery-feed'
 import { SearchPage } from '@/components/search-page'
 import { NotificationsPage } from '@/components/notifications-page'
 import { LikesPage } from '@/components/likes-page'
@@ -35,7 +35,7 @@ function HomePage() {
         <MobileStories />
         
         {/* Mobile Feed */}
-        <MobileFeed />
+        <MobileTemporalFeed />
       </div>
     )
   }
@@ -57,7 +57,7 @@ function HomePage() {
             (isLeftSidebarCollapsed || isRightSidebarCollapsed) ? "px-6 py-4 max-w-6xl" : 
             "px-4 py-4 max-w-5xl"
           )}>
-            <EventFeed />
+            <TemporalDiscoveryFeed />
           </div>
         </div>
       </div>
